@@ -86,6 +86,12 @@ class QRCodeTest < Test::Unit::TestCase
                  qr.to_s( :true => 'q', :false => 'n' )[0..21]
     assert_equal "@@@@@@@ @@ @  @@@@@@@\n", qr.to_s( :true => '@' )[0..21]
   end
+  
+  def test_to_image
+    qr = RQRCode::QRCode.new( 'duncan', :size => 1 )
+    assert_equal String, qr.to_image.class
+
+  end
 
   def test_rszf_error_not_thrown
     assert RQRCode::QRCode.new('2 1058 657682')

@@ -8,6 +8,10 @@
 # and distribution of modified versions of this work as long as the
 # above copyright notice is included.
 #++
-
+#require 'rubygems'
+require "RMagick"
+require "tempfile"
 require "rqrcode/core_ext"
 require "rqrcode/qrcode"
+
+include Magick

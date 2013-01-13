@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-
 #--
 # Copyright 2008 by Duncan Robertson (duncan@whomwah.com).
 # All rights reserved.
@@ -48,7 +47,7 @@ module RQRCode #:nodoc:
         Proc.new { |i,j| ((i * j) % 3 + (i + j) % 2) % 2 == 0 },
   ]
 
-  QRPOSITIONPATTERNLENGTH = 17 # (7 + 1) * 2 + 1
+  QRPOSITIONPATTERNLENGTH = (7 + 1) * 2 + 1
   QRFORMATINFOLENGTH = 15
 
   # StandardErrors
@@ -66,12 +65,10 @@ module RQRCode #:nodoc:
   #
 
   class QRCode
-    include Magick
     attr_reader :modules, :module_count
 
     PAD0 = 0xEC
     PAD1 = 0x11  
-    PIXSIZE = 10
 
     # Expects a string to be parsed in, other args are optional 
     #
@@ -147,10 +144,11 @@ module RQRCode #:nodoc:
 
     def to_s( *args )
       options                = args.extract_options!
-      row	             = options[:true] || 'x' 
-      col	             = options[:false] || ' ' 
+      row                    = options[:true] || 'x' 
+      col                    = options[:false] || ' ' 
 
       res = []
+
       @modules.each_index do |c|
         tmp = []
         @modules.each_index do |r|
@@ -165,45 +163,11 @@ module RQRCode #:nodoc:
       res.join("\n")
     end
     
-    # This is a public method that returns the QR Code you have
-    # generated as an RMagick ImageBlob. It can be sent to a browser or
-    # saved to a file for output. this format can be read by a decoder
-    # It takes 4 arguments, {file_type=>'jgp|gif|png',:dimension=><pixel_width>
-    # :bgcolor=>'white|black|red|blue', :color=>'black|white|red|blue'
-    #  instance._to_image( :file_type => 'jpg', :bgcolor => 'red', :color=>'black') =>
-    #  String
-    #  
-    #  The calling program could then write the blob to file:
-    #  code = File.new('qrcode.jpg')
-    #  code.write(instance._to_image())
-    #  code.close => the file is the QRCode as an image
-    
-
-    def to_image( *args )
-      options                = args.extract_options!
-      file_type 	     = options[:file_type] || 'jpg'
-      dimension		     = options[:dimension] || @module_count*PIXSIZE    
-      # TODO: check dimension is a factor of @module_count or adjust
-      bgcolor		     = options[:bgcolor] || 'white'
-      color		     = options[:color] || 'black'
-   
-      # build image using rmagick
-      canvas = ImageList.new
-      canvas.new_image(dimension,dimension) { self.background_color = bgcolor }
-      pixels = Draw.new
-      pixels.fill(color)
-      @modules.each_index do |c|
-	@modules.each_index do |r|        
-          top = r*PIXSIZE
-          left = c*PIXSIZE
-    	  pixels.rectangle(top, left, top+PIXSIZE-1,left+PIXSIZE-1) if is_dark(c,r)
-	end
-      end
-      pixels.draw(canvas)
-      # return blob so calling operator can manage the string output 
-      # Typically write to a file
-      canvas.to_blob {self.format = file_type}
+        
+    def to_image( *args)
+      
     end
+
 
     protected
 
