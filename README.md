@@ -1,14 +1,14 @@
-# rQRCode, Encode QRCodes
+# rQRCode-image, Encode QRCodes, Render QR Code Images
 
 ## Overview
 
-rQRCode is a library for encoding QR Codes in Ruby. It has a simple interface with all the standard qrcode options. It was adapted from the Javascript library by Kazuhiko Arase.
+rQRCode-image is a library for encoding QR Codes, and render images using RMagick in Ruby. It has a simple interface with all the standard qrcode options. It is a fork of whomwah(Duncan Robertson's rqrcode gem).
 
-Let's clear up some rQRCode stuff.
+Let's clear up some rQRCode-image stuff.
 
-* rQRCode is a __standalone library__ It requires no other libraries. Just Ruby!
+* rQRCode-image is NOT a __standalone library__ It requires RMagick and thus ImageMagick.
 * It is an encoding library. You can't decode QR codes with it.
-* The interface is simple and assumes you just want to encode a string into a QR code
+* The interface is simple and assumes you just want to encode a string into a QR code, then render an image of the QR Code
 * QR code is trademarked by Denso Wave inc
 
 ## Resources
@@ -16,16 +16,14 @@ Let's clear up some rQRCode stuff.
 * wikipedia:: http://en.wikipedia.org/wiki/QR_Code
 * Denso-Wave website:: http://www.denso-wave.com/qrcode/index-e.html
 * kaywa:: http://qrcode.kaywa.com
+* RMagic:: http://rmagick.rubyforge.org/
+* ImageMagick:: http://http://www.imagemagick.org
 
 ## Installing
 
-You may get the latest stable version from Rubygems. 
+You can get the latest source from http://github.com/bluetwin/rqrcode-image
 
-    gem install rqrcode
-
-You can also get the latest source from http://github.com/whomwah/rqrcode
-
-    git clone git://github.com/whomwah/rqrcode.git
+    git clone git://github.com/bluetwin/rqrcode-image.git
 
 ## Tests
 
@@ -33,75 +31,36 @@ To run the tests:
 
     $ rake
  
-## Loading rQRCode Itself
+## Loading rQRCode-image Itself
 
 You have installed the gem already, yeah?
 
     require 'rubygems'
-    require 'rqrcode'
+    require 'rqrcode-image'
 
-## Simple QRCode generation to screen
+## Simple QRCode generation to ImageBlob
 
 ```ruby
-qr = RQRCode::QRCode.new( 'my string to generate', :size => 4, :level => :h )
-puts qr.to_s
-#
-# Prints:
-# xxxxxxx x  x x   x x  xx  xxxxxxx
-# x     x  xxx  xxxxxx xxx  x     x
-# x xxx x  xxxxx x       xx x xxx x
-# ... etc
-```
+qr = RQRCodeImage::QRCode.new( 'my string to generate', :size => 4, :level => :h )
+puts qr.to_image
+
 
 ## Simple QRCode generation to template (RubyOnRails)
 
 ```erb
 # Controller
-@qr = RQRCode::QRCode.new( 'my string to generate', :size => 4, :level => :h )
+@qr = RQRCodeImage::QRCode.new( 'my string to generate', :size => 4, :level => :h )
 
 # View: (minimal styling added)
-<style type="text/css">
-table {
-  border-width: 0;
-  border-style: none;
-  border-color: #0000ff;
-  border-collapse: collapse;
-}
-td {
-  border-width: 0; 
-  border-style: none;
-  border-color: #0000ff; 
-  border-collapse: collapse; 
-  padding: 0; 
-  margin: 0; 
-  width: 10px; 
-  height: 10px; 
-}
-td.black { background-color: #000; }
-td.white { background-color: #fff; }
-</style>
 
-<table>
-<% @qr.modules.each_index do |x| %>
-  <tr>  
-  <% @qr.modules.each_index do |y| %>
-   <% if @qr.dark?(x,y) %>
-    <td class="black"/>
-   <% else %>
-    <td class="white"/>
-   <% end %>
-  <% end %>
-  </tr>
-<% end %>
-</table>
 ```
-
 ## Authors
 
-Original author: Duncan Robertson
+Original rqrcode author: Duncan Robertson
+Forked by(as done by many others) : Brandon Sislow
 
-Special thanks to the following people for submitting patches:
-
+Special thanks to the following people for submitting patches to rqrcode:
+* [Duncan Robertson] (https://github.com/whomwah)
 * [Chris Mowforth](http://blog.99th.st)
 * [Daniel Schierbeck](https://github.com/dasch)
 * [Gioele Barabucci](https://github.com/gioele) 
