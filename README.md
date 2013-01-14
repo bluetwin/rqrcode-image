@@ -1,4 +1,4 @@
-# rQRCode-image, Encode QRCodes, Render QR Code Images
+# rQRCode-image, Encode QRCodes, Render QRCode Images
 
 ## Overview
 
